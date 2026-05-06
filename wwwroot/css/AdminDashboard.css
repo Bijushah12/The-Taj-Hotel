@@ -1,0 +1,154 @@
+﻿
+/* ================= DARK DEFAULT THEME ================= */
+
+body {
+    background: #0b0f19;
+    color: #e5e7eb;
+    transition: 0.3s;
+}
+
+.admin-wrapper {
+    padding: 25px;
+}
+
+/* HEADER */
+
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+    .admin-header h3 {
+        font-weight: 700;
+    }
+
+/* BUTTONS */
+
+.btn-download, .btn-theme {
+    background: linear-gradient(135deg,#6366f1,#4f46e5);
+    border: none;
+    padding: 10px 16px;
+    border-radius: 25px;
+    color: white;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.btn-theme {
+    background: linear-gradient(135deg,#f59e0b,#f97316);
+}
+
+/* ================= CARDS ================= */
+
+.stat-card {
+    display: flex;
+    justify-content: space-between;
+    padding: 18px;
+    border-radius: 16px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    backdrop-filter: blur(12px);
+    transition: 0.3s;
+}
+
+    .stat-card:hover {
+        transform: translateY(-6px);
+    }
+
+.label {
+    opacity: 0.7;
+}
+
+.value {
+    font-size: 26px;
+    font-weight: 700;
+}
+
+.icon {
+    font-size: 28px;
+}
+
+/* COLORS */
+
+.blue {
+    border-left: 4px solid #4f46e5;
+}
+
+.green {
+    border-left: 4px solid #22c55e;
+}
+
+.orange {
+    border-left: 4px solid #f59e0b;
+}
+
+.red {
+    border-left: 4px solid #ef4444;
+}
+
+/* ================= BOXES ================= */
+
+.card-box {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 18px;
+    border-radius: 16px;
+    backdrop-filter: blur(12px);
+}
+
+/* ACTIVITY */
+
+.activity {
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-size: 14px;
+}
+
+.live {
+    background: #22c55e;
+    color: black;
+    font-size: 10px;
+    padding: 3px 6px;
+    border-radius: 8px;
+}
+
+/* BUTTONS */
+
+.btn-primary {
+    background: linear-gradient(135deg,#6366f1,#4f46e5);
+    border: none;
+}
+
+.btn-success {
+    background: linear-gradient(135deg,#16a34a,#22c55e);
+    border: none;
+}
+
+.btn-dark {
+    background: #111827;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+/* ================= LIGHT MODE ================= */
+
+body.light-mode {
+    background: #f5f7fb;
+    color: #111;
+}
+
+    body.light-mode .card-box,
+    body.light-mode .stat-card {
+        background: white;
+        color: black;
+        border: 1px solid #e5e7eb;
+    }
+
+    body.light-mode .activity {
+        border-bottom: 1px solid #eee;
+    }
+
+    body.light-mode .btn-download,
+    body.light-mode .btn-theme {
+        color: white;
+    }

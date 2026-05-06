@@ -1,0 +1,103 @@
+﻿/* ===== NAVBAR ===== */
+
+.custom-navbar {
+    background: linear-gradient(to right, #0f172a, #1e293b);
+    padding: 15px 40px;
+}
+
+.nav-link {
+    color: white !important;
+    font-weight: 500;
+}
+
+    .nav-link:hover {
+        color: #facc15 !important;
+    }
+
+.active-menu {
+    border-bottom: 2px solid #facc15;
+    padding-bottom: 3px;
+}
+
+/* ===== HERO SECTION ===== */
+.spa-hero {
+    height: 380px;
+    background: url("https://wallpaperaccess.com/full/1251812.jpg") center center/cover no-repeat;
+    position: relative;
+}
+
+.overlay {
+    background: rgba(0, 0, 0, 0.65);
+    height: 100%;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+    .overlay h1 {
+        font-size: 50px;
+        font-weight: 600;
+    }
+
+    .overlay p {
+        font-size: 18px;
+        margin-top: 10px;
+    }
+
+/* ===== CENTER SECTION ===== */
+
+/*.massage-bg {
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://wallpaperaccess.com/full/1251812.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 80px 20px;*/
+/*    text-align: center;*/
+    /*height:300px;
+    margin-bottom:20px;
+}*/
+
+.massage-bg {
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(https://wallpaperaccess.com/full/1251812.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 100px 0;
+    height:250px;
+    margin-bottom: 30px;
+}
+   
+/*.section-light {
+    background: #f3f4f6;
+    padding: 80px 0;
+}
+
+    .section-light h1 {
+        font-size: 45px;
+        font-weight: 700;
+    }*/
+
+
+/* ===== CARDS ===== */
+
+.spa-card {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 18px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    transition: 0.3s ease;
+}
+
+    .spa-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+
+/* ===== FOOTER ===== */
+
+footer {
+    background: #0f172a;
+}
