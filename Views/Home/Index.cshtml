@@ -1,0 +1,204 @@
+﻿@model HotelBooking.Models.ContactMessage
+@{
+    ViewData["Title"] = "Home";
+}
+
+<div class="container py-5">
+
+    <!-- HERO SECTION -->
+    <div class="row align-items-center mb-5">
+        <div class="col-md-6">
+            <h1 class="fw-bold">Welcome to <span class="text-primary">Luxury Hotel</span></h1>
+            <p class="text-muted mt-3">
+                Experience unmatched comfort, refined luxury, and world-class hospitality at our hotel.
+                Every detail is thoughtfully designed to make your stay memorable.
+            </p>
+
+            <!-- UPDATED BUTTON -->
+            <a asp-controller="Rooms" asp-action="Index" class="btn btn-primary mt-3 mb-3">
+                View Rooms
+            </a>
+
+        </div>
+
+        <div class="col-md-6">
+            <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945"
+                 class="img-fluid rounded shadow" />
+        </div>
+    </div>
+
+    <!-- WHY CHOOSE US -->
+    <h3 class="text-center mb-4">Why Choose Us?</h3>
+
+    <div class="row mb-5">
+
+        <div class="col-md-4 mb-4">
+            <div class="card shadow h-100">
+                <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c"
+                     class="card-img-top"
+                     style="height:200px; object-fit:cover;">
+                <div class="card-body text-center">
+                    <h5>Luxury Rooms</h5>
+                    <p class="text-muted">Spacious rooms with premium interiors.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card shadow h-100">
+                <img src="https://agronfoodprocessing.com/wp-content/uploads/2026/02/hotel.png"
+                     class="card-img-top"
+                     style="height:200px; object-fit:cover;">
+                <div class="card-body text-center">
+                    <h5>Fine Dining</h5>
+                    <p class="text-muted">Delicious food prepared by top-class chefs.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow h-100">
+                <img src="https://www.conradpune.com/wp-content/uploads/2022/08/1-14.png"
+                     class="card-img-top"
+                     style="height:200px; object-fit:cover;">
+                <div class="card-body text-center">
+                    <h5>Best Location</h5>
+                    <p class="text-muted">Located in the heart of the city with easy access.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- OUR ROOMS -->
+    <h3 class="text-center mb-4">Our Rooms</h3>
+    <div class="row mb-5">
+
+        <div class="col-md-4 mb-3">
+            <div class="card shadow">
+                <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b" class="card-img-top">
+                <div class="card-body text-center">
+                    <h5>Deluxe Room</h5>
+                    <p class="text-muted">Comfortable room with city view.</p>
+
+                    <!-- UPDATED BUTTON -->
+                    <a asp-controller="Rooms" asp-action="Index" class="btn btn-primary btn-sm">
+                        Book Now
+                    </a>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <div class="card shadow">
+                <img src="https://images.unsplash.com/photo-1578683010236-d716f9a3f461" class="card-img-top">
+                <div class="card-body text-center">
+                    <h5>Luxury Room</h5>
+                    <p class="text-muted">Premium amenities and spacious layout.</p>
+
+                    <!-- UPDATED BUTTON -->
+                    <a asp-controller="Rooms" asp-action="Index" class="btn btn-primary btn-sm">
+                        Book Now
+                    </a>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow">
+                <img src="http://www.gardenhill.in/wp-content/uploads/hotel-room.png" class="card-img-top">
+                <div class="card-body text-center">
+                    <h5>Suite</h5>
+                    <p class="text-muted">Luxury suite with premium facilities.</p>
+
+                    <!-- UPDATED BUTTON -->
+                    <a asp-controller="Rooms" asp-action="Index" class="btn btn-primary btn-sm">
+                        Book Now
+                    </a>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- SPA SECTION -->
+    <div class="row align-items-center mb-5">
+        <div class="col-md-6">
+            <img src="https://as2.ftcdn.net/jpg/18/59/97/91/1000_F_1859979189_2kH6j2EchQQohLeTIdZ2D4owZWvpn7S8.jpg"
+                 class="img-fluid rounded shadow">
+        </div>
+        <div class="col-md-6">
+            <h3>Spa & Wellness</h3>
+            <p class="text-muted">
+                Relax and rejuvenate with our professional spa services.
+            </p>
+
+            <!-- UPDATED BUTTON -->
+            <a asp-controller="Spa" asp-action="Index" class="btn btn-warning">
+                Explore Spa
+            </a>
+
+        </div>
+    </div>
+
+    <!-- RESTAURANT -->
+    <div class="row align-items-center mb-5">
+        <div class="col-md-6">
+            <h3>Restaurant</h3>
+            <p class="text-muted">
+                Indulge in gourmet dishes prepared by our top chefs.
+            </p>
+
+            <!-- UPDATED BUTTON -->
+            <a asp-controller="Restaurant" asp-action="Index" class="btn btn-success mb-3">
+                Explore Restaurant
+            </a>
+
+        </div>
+        <div class="col-md-6">
+            <img src="https://images.unsplash.com/photo-1552566626-52f8b828add9"
+                 class="img-fluid rounded shadow">
+        </div>
+    </div>
+
+    <!-- TESTIMONIALS -->
+    <h3 class="text-center mb-4">What Our Guests Say</h3>
+    <div class="row mb-5">
+        <div class="col-md-4">
+            <div class="card p-3 shadow text-center">
+                <p>"Amazing stay! The rooms were luxurious."</p>
+                <strong>- Krupa Dave</strong>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card p-3 shadow text-center">
+                <p>"The spa and restaurant made our weekend unforgettable."</p>
+                <strong>- Snehal Suryavanshi</strong>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card p-3 shadow text-center">
+                <p>"Perfect location and friendly staff."</p>
+                <strong>- Bijal Shah</strong>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTACT CTA -->
+    <div class="text-center">
+        <h3>Ready to Book Your Stay?</h3>
+        <p class="text-muted">Contact us today to secure your room!</p>
+
+        <!-- UPDATED BUTTON -->
+        <a asp-controller="Contact" asp-action="Index" class="btn btn-info">
+            Contact Us
+        </a>
+
+    </div>
+
+</div>

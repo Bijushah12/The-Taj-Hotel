@@ -1,0 +1,197 @@
+﻿@model List<HotelBooking.Models.RoomBooking>
+
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="container mt-4">
+
+    <h2 class="mb-4">Room Bookings</h2>
+
+    <div class="d-flex gap-2 mb-3">
+
+        <input id="searchBox"
+               class="form-control"
+               placeholder="Search room..." />
+
+        <select id="statusFilter"
+                class="form-select"
+                style="width:180px">
+
+            <option value="All">All</option>
+            <option value="Pending">Pending</option>
+            <option value="Confirmed">Confirmed</option>
+
+        </select>
+
+    </div>
+
+    <div style="max-height:500px;overflow-y:auto">
+
+        <table class="table bg-white shadow-sm" id="bookingTable">
+
+            <thead class="table-dark sticky-top">
+
+                <tr>
+                    <th>Room</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                    <th style="width:260px">Actions</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                @foreach (var b in Model)
+                {
+
+                    <tr data-status="@b.Status">
+
+                        <td class="room">@b.RoomType</td>
+
+                        <td>₹@b.TotalAmount</td>
+
+                        <td>
+
+                            <span class="badge rounded-pill px-3
+    @(b.Status == "Confirmed" ? "bg-success" : "bg-warning text-dark")">
+
+                                @b.Status
+
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <button class="btn btn-sm btn-success me-2 action-btn"
+                                    onclick="changeStatus(@b.Id,'Confirmed')">
+
+                                Confirm
+
+                            </button>
+
+                            <button class="btn btn-sm btn-secondary me-2 action-btn"
+                                    onclick="changeStatus(@b.Id,'Pending')">
+
+                                Pending
+
+                            </button>
+
+                            <button class="btn btn-sm btn-danger action-btn"
+                                    onclick="deleteBooking(@b.Id)">
+
+                                Delete
+
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+                }
+
+                <tr id="noDataRow" style="display:none">
+                    <td colspan="4" class="text-center">
+                        No bookings found
+                    </td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+<script>
+
+    function changeStatus(id,status){
+
+    $.post("/AdminBookings/ChangeStatus",
+    { id:id, status:status },
+    function(){
+    location.reload();
+    });
+
+    }
+
+    function deleteBooking(id){
+
+    if(!confirm("Delete booking?")) return;
+
+    $.post("/AdminBookings/Delete",
+    { id:id },
+    function(){
+    location.reload();
+    });
+
+    }
+
+    $("#searchBox").on("keyup",function(){
+
+    var value=$(this).val().toLowerCase();
+
+    var visible=0;
+
+    $("#bookingTable tbody tr").each(function(){
+
+    if($(this).find(".room").text().toLowerCase().indexOf(value)>-1){
+
+    $(this).show();
+    visible++;
+
+    }else{
+
+    $(this).hide();
+
+    }
+
+    });
+
+    if(visible==0){
+    $("#noDataRow").show();
+    }else{
+    $("#noDataRow").hide();
+    }
+
+    });
+
+    $("#statusFilter").on("change",function(){
+
+    var value=$(this).val();
+
+    $("#bookingTable tbody tr").each(function(){
+
+    var status=$(this).data("status");
+
+    if(value=="All" || status==value){
+
+    $(this).show();
+
+    }else{
+
+    $(this).hide();
+
+    }
+
+    });
+
+    });
+
+</script>
+
+<style>
+
+    .action-btn {
+        transition: all .2s ease;
+    }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,.2);
+        }
+
+</style>

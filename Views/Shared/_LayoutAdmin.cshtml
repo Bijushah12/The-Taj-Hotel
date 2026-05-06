@@ -1,0 +1,219 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewData["Title"]</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+
+        /* ================= ROOT THEME ================= */
+
+        body {
+            margin: 0;
+            font-family: "Segoe UI";
+            transition: 0.3s;
+        }
+
+            /* DARK MODE (DEFAULT) */
+            body.dark-mode {
+                background: #0b0f19;
+                color: #e5e7eb;
+            }
+
+            /* LIGHT MODE */
+            body.light-mode {
+                background: #f5f7fb;
+                color: #111;
+            }
+
+        /* ================= SIDEBAR ================= */
+
+        .sidebar {
+            position: fixed;
+            width: 240px;
+            height: 100vh;
+            padding-top: 20px;
+            transition: 0.3s;
+        }
+
+        /* DARK SIDEBAR */
+        body.dark-mode .sidebar {
+            background: #0f172a;
+            border-right: 1px solid rgba(255,255,255,0.08);
+        }
+
+        /* LIGHT SIDEBAR */
+        body.light-mode .sidebar {
+            background: #ffffff;
+            border-right: 1px solid #e5e7eb;
+        }
+
+        .sidebar h3 {
+            text-align: center;
+            color: #f43f5e;
+            margin-bottom: 20px;
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 12px 18px;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        body.dark-mode .sidebar a {
+            color: #cbd5e1;
+        }
+
+        body.light-mode .sidebar a {
+            color: #333;
+        }
+
+        .sidebar a:hover {
+            background: rgba(99,102,241,0.2);
+        }
+
+        /* ================= CONTENT ================= */
+
+        .content {
+            margin-left: 240px;
+            padding: 20px;
+            transition: 0.3s;
+        }
+
+        /* ================= TOPBAR ================= */
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 18px;
+            border-radius: 14px;
+            transition: 0.3s;
+        }
+
+        body.dark-mode .topbar {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        body.light-mode .topbar {
+            background: #fff;
+            border: 1px solid #e5e7eb;
+        }
+
+        /* ================= BUTTONS ================= */
+
+        .btn-theme {
+            background: linear-gradient(135deg,#6366f1,#4f46e5);
+            border: none;
+            color: white;
+            padding: 8px 14px;
+            border-radius: 20px;
+        }
+
+        .btn-user {
+            background: #111827;
+            border: 1px solid rgba(255,255,255,0.1);
+            color: white;
+            padding: 8px 14px;
+            border-radius: 20px;
+        }
+
+        .btn-logout {
+            background: linear-gradient(135deg,#ef4444,#dc2626);
+            border: none;
+            color: white;
+            padding: 8px 18px;
+            border-radius: 20px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+
+        <h3><i class="fa fa-hotel"></i> Admin</h3>
+
+        <a href="/Admin/Dashboard">Dashboard</a>
+        <a href="/Admin/Users">Users</a>
+        <a href="/AdminBookings/Index">Bookings</a>
+        <a href="/AdminSpa/Index">Spa</a>
+        <a href="/AdminRestaurant/Index">Restaurant</a>
+
+    </div>
+
+    <!-- CONTENT -->
+    <div class="content">
+
+        <!-- TOPBAR -->
+        <div class="topbar">
+
+            <h5>@ViewData["Title"]</h5>
+
+            <div class="d-flex gap-2 align-items-center">
+
+                <button class="btn-user">
+                    <i class="fa fa-user"></i> Admin
+                </button>
+
+                <!-- THEME TOGGLE -->
+                <button class="btn-theme" onclick="toggleTheme()">
+                    🌙 Theme
+                </button>
+
+                <form asp-controller="Admin" asp-action="Logout" method="post">
+                    <button class="btn-logout">Logout</button>
+                </form>
+
+            </div>
+
+        </div>
+
+        @RenderBody()
+
+    </div>
+
+    @RenderSection("Scripts", required: false)
+
+    <script>
+
+        function toggleTheme() {
+
+            document.body.classList.toggle("light-mode");
+            document.body.classList.toggle("dark-mode");
+
+            localStorage.setItem(
+                "theme",
+                document.body.classList.contains("light-mode") ? "light" : "dark"
+            );
+        }
+
+        window.onload = function () {
+
+            let theme = localStorage.getItem("theme");
+
+            if (theme === "light") {
+                document.body.classList.add("light-mode");
+                document.body.classList.remove("dark-mode");
+            } else {
+                document.body.classList.add("dark-mode");
+            }
+        }
+
+    </script>
+
+</body>
+</html>

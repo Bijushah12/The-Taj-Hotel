@@ -1,0 +1,222 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>@ViewData["Title"] - The Taj</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <!-- Site CSS -->
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/Rooms.css" />
+    <link rel="stylesheet" href="~/css/spa.css" />
+
+    <link rel="stylesheet" href="~/HotelBooking.styles.css" asp-append-version="true" />
+</head>
+<body>
+    @using Microsoft.AspNetCore.Http
+    @inject IHttpContextAccessor HttpContextAccessor
+
+    @{
+        var username = HttpContextAccessor.HttpContext.Session.GetString("Username");
+    }
+    @{
+        var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+        var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
+    }
+    <header>
+        @* <nav class="navbar navbar-expand-lg navbar-dark bg-black shadow-sm">
+            <div class="container-fluid">
+
+                <!-- Logo -->
+                <a class="navbar-brand d-flex align-items-center gap-2"
+                   asp-controller="Home"
+                   asp-action="Index">
+
+                    <img src="~/images/logo.jpeg"
+                         alt="The Taj Logo"
+                         class="taj-logo" />
+
+                    <span class="fw-bold text-warning fs-4">The Taj</span>
+                </a>
+
+                <!-- Toggle Button (Mobile) -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Center Menu -->
+                <div class="collapse navbar-collapse justify-content-center" id="mainNavbar">
+                    <ul class="navbar-nav gap-3">
+                        <li class="nav-item">
+                            <a class="nav-link active text-warning" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="#">Rooms</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="#">Restaurant</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="#">Spa</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="#">Contact</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- RIGHT SIDE BUTTONS -->
+                <div class="ms-auto d-flex gap-3">
+                    <a class="btn btn-outline-light btn-sm"
+                       asp-controller="Account"
+                       asp-action="Login">
+                        Login
+                    </a>
+
+                    <a class="btn btn-warning btn-sm"
+                       asp-controller="Account"
+                       asp-action="Register">
+                        Register
+                    </a>
+                </div>
+
+            </div>
+        </nav> *@
+        <nav class="navbar navbar-expand-lg navbar-dark shadow-sm">
+            <div class="container-fluid">
+
+                <!-- Logo -->
+                <a class="navbar-brand d-flex align-items-center gap-2"
+                   asp-controller="Home"
+                   asp-action="Index">
+
+                    <img src="~/images/logo.jpeg"
+                         alt="The Taj Logo"
+                         class="taj-logo" />
+
+                    <span class="fw-bold fs-4">The Taj</span>
+                </a>
+
+                <!-- Toggle Button -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Center Menu -->
+                <div class="collapse navbar-collapse justify-content-center" id="mainNavbar">
+                    <ul class="navbar-nav gap-3">
+
+                        <li class="nav-item">
+                            <a class="nav-link @(currentController == "Home" ? "active" : "")"
+                               asp-controller="Home"
+                               asp-action="Index">
+                                Home
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link @(currentController == "Rooms" ? "active" : "")"
+                               asp-controller="Rooms"
+                               asp-action="Index">
+                                Rooms
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link @(currentController == "Restaurant" ? "active" : "")"
+                               asp-controller="Restaurant"
+                               asp-action="Index">
+                                Restaurant
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link @(currentController == "Spa" ? "active" : "")"
+                               asp-controller="Spa"
+                               asp-action="Index">
+                                Spa
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                        <li class="nav-item">
+                            <a class="nav-link @(currentController == "Contact" ? "active" : "")"
+                               asp-controller="Contact"
+                               asp-action="Index">
+                                Contact
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+
+                <!-- RIGHT SIDE BUTTONS -->
+                <div class="ms-auto d-flex gap-3">
+
+                    @if (!string.IsNullOrEmpty(username))
+                    {
+                        <span class="text-white fw-bold p-2">
+                            Welcome, @username
+                        </span>
+
+                        <a class="btn btn-danger btn-sm"
+                           asp-controller="Account"
+                           asp-action="Logout">
+                            Logout
+                        </a>
+                    }
+                    else
+                    {
+                        <a class="btn btn-login btn-sm" asp-controller="Account" asp-action="Login">
+                            Login
+                        </a>
+
+                        <a class="btn btn-register btn-sm" asp-controller="Account" asp-action="Register">
+                            Register
+                        </a>
+                    }                  
+
+                </div>
+
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    @* <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2026 - HotelBooking -
+            <a asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer> *@
+
+    <!-- FOOTER -->
+    <footer class="bg-dark text-white text-center p-4">
+        &copy; 2026 Luxury Hotel. All Rights Reserved.
+    </footer>
+
+    <!-- ✅ SCRIPTS (ORDER IS IMPORTANT) -->
+    <!-- jQuery (optional, but safe) -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+    <!-- Bootstrap JS (REQUIRED FOR MODAL) -->
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Site JS -->
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <!-- ✅ PAGE-SPECIFIC SCRIPTS (Spa.js etc.) -->
+    @RenderSection("Scripts", required: false)
+
+
+</body>
+</html>

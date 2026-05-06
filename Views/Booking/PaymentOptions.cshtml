@@ -1,0 +1,146 @@
+﻿
+
+<link rel="stylesheet" href="~/css/Payment.css" />
+
+<div class="payment-page">
+
+    <div class="container py-5">
+
+        <div class="row g-4">
+
+            <!-- PAYMENT METHODS -->
+
+            <div class="col-md-8">
+
+                <div class="payment-card">
+
+                    <h3 class="mb-4">Choose Payment Method</h3>
+
+                    <div class="payment-option" onclick="selectMethod('upi')" id="upi">
+                        📱 UPI (Google Pay / PhonePe / Paytm)
+                    </div>
+
+                    <div class="payment-option" onclick="selectMethod('card')" id="card">
+                        💳 Credit / Debit Card
+                    </div>
+
+                    <div class="payment-option" onclick="selectMethod('bank')" id="bank">
+                        🏦 Net Banking
+                    </div>
+
+                    <button class="pay-btn mt-4" onclick="handlePayment()">
+                        Pay ₹@ViewBag.TotalAmount
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- BOOKING SUMMARY -->
+
+            <div class="col-md-4">
+
+                <div class="summary-card">
+
+                    <h4 class="mb-3">Booking Summary</h4>
+
+                    <hr>
+
+                    <p><strong>Room:</strong> @ViewBag.RoomName</p>
+
+                    <p><strong>Check In:</strong> @ViewBag.CheckIn.ToString("dd MMM yyyy")</p>
+
+                    <p><strong>Check Out:</strong> @ViewBag.CheckOut.ToString("dd MMM yyyy")</p>
+
+                    <p><strong>Price per Night:</strong> ₹@ViewBag.Price</p>
+
+                    <p><strong>Total Nights:</strong> @ViewBag.Nights</p>
+
+                    <hr>
+
+                    <h3 class="total">
+                        Total ₹@ViewBag.TotalAmount
+                    </h3>
+
+                    <p class="secure">
+                        🔒 Secure Payment
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<form id="bookingForm" method="post" action="/Booking/PaymentSuccess">
+    <input type="hidden" name="UserId" value="@User.FindFirst("Id")?.Value" />
+    <input type="hidden" name="RoomType" value="@ViewBag.RoomName" />
+    <input type="hidden" name="Price" value="@ViewBag.Price" />
+    <input type="hidden" name="CheckIn" value="@ViewBag.CheckIn.ToString("yyyy-MM-dd")" />
+    <input type="hidden" name="CheckOut" value="@ViewBag.CheckOut.ToString("yyyy-MM-dd")" />
+    <input type="hidden" name="Nights" value="@ViewBag.Nights" />
+    <input type="hidden" name="TotalAmount" value="@ViewBag.TotalAmount" />
+</form>
+
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+
+    let method = "";
+
+    function selectMethod(type){
+
+    method = type;
+
+    document.querySelectorAll(".payment-option").forEach(x=>{
+    x.classList.remove("active");
+    });
+
+    document.getElementById(type).classList.add("active");
+
+    }
+
+    function handlePayment(){
+
+    if(method === ""){
+
+    Swal.fire({
+    icon:"warning",
+    title:"Select Payment Method",
+    text:"Please choose a payment method."
+    });
+
+    return;
+
+    }
+
+    Swal.fire({
+
+    title:"Payment Successful 🎉",
+
+    html:`
+    <h4>Your booking is confirmed!</h4>
+    <p><strong>Total Paid:</strong> ₹@ViewBag.TotalAmount</p>
+    <p>Enjoy your stay 🏨</p>
+    `,
+
+    icon:"success",
+
+    confirmButtonColor:"#16a34a"
+
+    }).then(()=>{
+
+    document.getElementById("bookingForm").submit();
+
+    });
+
+    }
+
+</script>

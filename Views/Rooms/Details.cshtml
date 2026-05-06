@@ -1,0 +1,55 @@
+﻿@model HotelBooking.Models.Room
+
+<div class="container mt-4">
+
+    <div class="row">
+
+        <div class="col-md-6">
+            <img src="@Model.ImageUrl"
+                 class="img-fluid rounded">
+        </div>
+
+        <div class="col-md-6">
+
+            <h2>@Model.Name</h2>
+
+            <p>@Model.Description</p>
+            <a href="e:\hotelbooking\controllers\adminbookingscontroller.cs"></a>
+            <h4>₹@Model.PricePerNight / night</h4>
+
+            <hr>
+
+            <h5>Enter Booking Details</h5>
+
+            <form asp-controller="Booking"
+                  asp-action="PaymentOptions"
+                  method="get">
+
+                <input type="hidden"
+                       name="roomId"
+                       value="@Model.Id" />
+
+                <label>Check In</label>
+                <input type="date"
+                       name="checkin"
+                       class="form-control mb-2"
+                       required />
+
+                <label>Check Out</label>
+                <input type="date"
+                       name="checkout"
+                       class="form-control mb-3"
+                       required />
+
+                <button type="submit"
+                        class="btn btn-success w-100">
+                    Book Now
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>

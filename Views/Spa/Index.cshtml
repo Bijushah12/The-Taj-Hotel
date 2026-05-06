@@ -1,0 +1,237 @@
+﻿@model List<HotelBooking.Models.SpaService>
+
+@{
+    ViewData["Title"] = "Luxury Spa";
+}
+
+<link rel="stylesheet" href="~/css/spa.css" />
+
+<section class="massage-bg">
+    <div class="container text-center ">
+        <h5 class="text-light">Have a Look at Our</h5>
+        <h1 class="display-4 fw-bold text-white">Massage Therapy Center</h1>
+        <p class="text-light">
+            You deserve better than a rushed massage. Experience true relaxation.
+        </p>
+    </div>
+</section>
+
+<!-- SUCCESS MESSAGE -->
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success text-center fw-bold">
+        @TempData["Success"]
+    </div>
+}
+
+<!-- ERROR MESSAGE -->
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger text-center fw-bold">
+        @TempData["Error"]
+    </div>
+}
+
+<!-- BOOKINGS SECTION -->
+<div id="bookingSection" class="card shadow-sm mb-5 d-none">
+    <div class="card-body">
+        <h4 class="fw-bold text-success mb-3">📋 Your Spa Bookings</h4>
+
+        <ul id="bookingList" class="list-group mb-3"></ul>
+
+        <h5 class="text-end fw-bold text-primary">
+            Total: ₹<span id="totalPrice">0</span>
+        </h5>
+    </div>
+</div>
+
+<!-- SERVICES -->
+<div class="row">
+    @foreach (var s in Model)
+    {
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 text-center spa-card p-3 shadow-sm"
+                 style="background:linear-gradient(135deg,@s.Color,#ffffff)">
+
+                <div class="display-4 mb-2">@s.Icon</div>
+                <h5 class="fw-bold">@s.Name</h5>
+                <p>@s.Description</p>
+                <p class="fw-semibold text-success fs-5">₹@s.Price</p>
+
+                <div class="d-flex justify-content-center gap-2">
+
+                    <!-- BOOK NOW -->
+                    <button type="button"
+                            class="btn btn-primary btn-sm"
+                            onclick="openModal('@s.Name', @s.Price)">
+                        🔘 Book Now
+                    </button>
+
+                    <!-- ADD TO CART -->
+                    <button type="button"
+                            class="btn btn-outline-success btn-sm"
+                            onclick="addToCart('@s.Name', @s.Price)">
+                        🛒 Add to List
+                    </button>
+
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<!-- ================= MODAL ================= -->
+<div class="modal fade" id="spaModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-4 p-3">
+
+            <div class="modal-header border-0">
+                <h5 id="modalTitle" class="text-primary fw-bold"></h5>
+                <button type="button" class="btn-close" onclick="closeModal()"></button>
+            </div>
+
+            <div class="modal-body">
+
+                <form id="spaBookingForm"
+                      method="post"
+                      asp-controller="Spa"
+                      asp-action="BookSpa">
+
+                    <input type="hidden" id="serviceName" name="serviceName" />
+                    <input type="hidden" id="servicePrice" name="price" />
+
+                    <label class="fw-semibold">Select Date</label>
+                    <input type="date"
+                           id="date"
+                           name="bookingDate"
+                           class="form-control mb-3"
+                           required />
+
+                    <label class="fw-semibold">Select Time</label>
+                    <input type="time"
+                           id="time"
+                           name="bookingTime"
+                           class="form-control"
+                           required />
+
+                </form>
+
+            </div>
+
+            <div class="modal-footer border-0">
+                <button type="button"
+                        class="btn btn-secondary"
+                        onclick="closeModal()">
+                    Cancel
+                </button>
+
+                <button type="button"
+                        class="btn btn-success"
+                        onclick="confirmBooking()">
+                    Confirm Booking
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        let cart = [];
+        let currentService = "";
+        let currentPrice = 0;
+
+        // Toggle booking section
+        function toggleBookings() {
+            document.getElementById("bookingSection").classList.toggle("d-none");
+        }
+
+        // Add to cart
+        function addToCart(name, price, date = "", time = "") {
+
+            cart.push({ name, price, date, time });
+
+            let list = document.getElementById("bookingList");
+            if (!list) return;
+
+            let li = document.createElement("li");
+            li.className = "list-group-item d-flex justify-content-between align-items-center";
+            li.innerHTML =
+                `<div>
+                    <strong>${name}</strong>
+                    ${date ? `<br/><small>${date} - ${time}</small>` : ""}
+                </div>
+                 <span class="fw-bold text-success">₹${price}</span>`;
+
+            list.appendChild(li);
+
+            updateTotal();
+        }
+
+        // Update total price
+        function updateTotal() {
+            const totalPriceEl = document.getElementById("totalPrice");
+            const cartCountEl = document.getElementById("cartCount");
+
+            if (!totalPriceEl || !cartCountEl) return;
+
+            let total = 0;
+            cart.forEach(item => total += item.price);
+
+            totalPriceEl.innerText = total;
+            cartCountEl.innerText = cart.length;
+        }
+
+        // Open modal
+        function openModal(name, price) {
+
+            currentService = name;
+            currentPrice = price;
+
+            document.getElementById("modalTitle").innerText = "📅 Book " + name;
+            document.getElementById("serviceName").value = name;
+            document.getElementById("servicePrice").value = price;
+
+            var modal = new bootstrap.Modal(document.getElementById("spaModal"));
+            modal.show();
+        }
+
+        // Close modal
+        function closeModal() {
+            var modalElement = document.getElementById("spaModal");
+            var modal = bootstrap.Modal.getInstance(modalElement);
+            modal.hide();
+
+            document.getElementById("date").value = "";
+            document.getElementById("time").value = "";
+        }
+
+        // Confirm booking
+        function confirmBooking() {
+
+            let date = document.getElementById("date").value;
+            let time = document.getElementById("time").value;
+
+            if (!date || !time) {
+                alert("⚠️ Please select date and time");
+                return;
+            }
+
+            // Add to cart UI
+            addToCart(currentService, currentPrice, date, time);
+
+            // Show success message
+            const successMsg = document.createElement("div");
+            successMsg.className = "alert alert-success text-center fw-bold";
+            successMsg.innerText = `🎉 Congrats! Your booking for "${currentService}" is successfully done.`;
+            const container = document.querySelector(".container");
+            if (container) container.prepend(successMsg);
+
+            setTimeout(() => successMsg.remove(), 3000);
+
+            // Close modal
+            closeModal();
+        }
+    </script>
+}

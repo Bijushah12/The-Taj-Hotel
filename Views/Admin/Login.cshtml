@@ -1,0 +1,93 @@
+﻿@model HotelBooking.Models.AdminLoginViewModel
+@{
+    ViewData["Title"] = "Admin Login";
+    Layout = null;
+}
+
+<link rel="stylesheet" href="~/css/AdminLogin.css" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+
+<div class="login-container">
+
+    <div class="login-card">
+
+        <div class="logo">
+            <i class="fa-solid fa-hotel"></i>
+        </div>
+
+        <h2>Hotel Admin Panel</h2>
+        <p>Secure access to hotel management</p>
+
+        @if (ViewBag.ServerError != null)
+        {
+            <div class="alert alert-danger py-2">
+                @ViewBag.ServerError
+            </div>
+        }
+
+        <form asp-action="Login" method="post">
+
+            <!-- USERNAME -->
+            <div class="input-box">
+                <i class="fa fa-user"></i>
+                <input asp-for="Username"
+                       placeholder="Username"
+                       class="form-control" />
+            </div>
+
+            <span asp-validation-for="Username" class="text-danger"></span>
+
+            <!-- PASSWORD -->
+            <div class="input-box" style="position:relative;">
+                <i class="fa fa-lock"></i>
+
+                <input asp-for="Password"
+                       type="password"
+                       id="passwordInput"
+                       placeholder="Password"
+                       class="form-control" />
+
+                <span onclick="togglePassword()"
+                      style="position:absolute; right:12px; top:50%; transform:translateY(-50%); cursor:pointer;">
+                    <i id="eyeIcon" class="fa fa-eye"></i>
+                </span>
+            </div>
+
+            <span asp-validation-for="Password" class="text-danger"></span>
+
+            <!-- REMEMBER -->
+            <div class="form-check mt-3 text-start">
+                <input asp-for="RememberMe" class="form-check-input" />
+                <label class="form-check-label">Remember me</label>
+            </div>
+
+            <button type="submit" class="btn login-btn w-100 mt-4">
+                <i class="fa fa-right-to-bracket"></i> Login
+            </button>
+
+        </form>
+
+        <div class="login-footer">
+            © 2026 Luxury Hotel Admin
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ✅ MUST BE OUTSIDE -->
+<script>
+    function togglePassword() {
+        const input = document.getElementById("passwordInput");
+        const icon = document.getElementById("eyeIcon");
+
+        if (!input || !icon) return;
+
+        const isHidden = input.type === "password";
+
+        input.type = isHidden ? "text" : "password";
+
+        icon.classList.toggle("fa-eye", !isHidden);
+        icon.classList.toggle("fa-eye-slash", isHidden);
+    }
+</script>

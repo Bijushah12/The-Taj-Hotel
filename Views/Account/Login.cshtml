@@ -1,0 +1,114 @@
+﻿@model HotelBooking.Models.LoginViewModel
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div style="
+     min-height:100vh;
+     background:linear-gradient(135deg,#667eea,#764ba2);
+     display:flex;
+     align-items:center;
+     justify-content:center;
+">
+    <div class="card shadow-lg p-4 rounded-4" style="width:400px">
+
+        <h3 class="text-center fw-bold">Welcome Back</h3>
+        <p class="text-center text-muted">Login to continue</p>
+
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert alert-danger">
+                @ViewBag.Error
+            </div>
+        }
+
+        <form method="post"
+              asp-action="Login"
+              asp-controller="Account">
+
+            <input class="form-control mb-3"
+                   name="email"
+                   placeholder="Email"
+                   value="@Model?.Email"
+                   required />
+
+            <input type="password"
+                   class="form-control mb-3"
+                   name="password"
+                   placeholder="Password"
+                   required />
+
+            <button class="btn btn-dark w-100 rounded-pill">
+                Login
+            </button>
+
+        </form>
+    </div>
+</div>
+
+@* @model HotelBooking.Models.LoginViewModel
+
+<link rel="stylesheet" href="~/css/Login.css" />
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<div class="login-page">
+
+    <!-- WELCOME BANNER -->
+    <div class="welcome-banner">
+        <h1>Welcome To The Taj Hotel</h1>
+        <p>Experience Luxury & Comfort</p>
+    </div>
+
+    <!-- LOGIN CARD -->
+    <div class="login-card">
+        <h2>Welcome Back</h2>
+        <p class="subtitle">Login to continue</p>
+
+        @if(ViewBag.ServerError != null)
+        {
+            <div class="alert alert-danger">@ViewBag.ServerError</div>
+        }
+
+        <form method="post" id="loginForm">
+
+            <input type="text" name="Email" placeholder="Email" value="@Model?.Email" />
+            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+
+            <input type="password" name="Password" placeholder="Password" />
+            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+
+            <button type="submit">Login</button>
+
+        </form>
+    </div>
+
+    <footer>© 2026 The Taj Hotel</footer>
+</div>
+
+<script>
+    document.getElementById("loginForm").addEventListener("submit", function(e){
+        e.preventDefault();
+
+        let email = this.Email.value.trim();
+        let password = this.Password.value.trim();
+        let errors = [];
+
+        if(email === "") errors.push("Email is required");
+        else if(!/\S+@\S+\.\S+/.test(email)) errors.push("Invalid email format");
+
+        if(password === "") errors.push("Password is required");
+        else if(password.length < 5) errors.push("Password must be at least 5 characters");
+
+        if(errors.length > 0){
+            Swal.fire({
+                icon: "warning",
+                title: "Validation Error",
+                html: errors.join("<br/>")
+            });
+            return;
+        }
+
+        // submit form normally if validation passes
+        this.submit();
+    });
+</script> *@

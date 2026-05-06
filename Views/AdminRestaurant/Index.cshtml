@@ -1,0 +1,203 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Admin Restaurant";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2 class="mb-4">Restaurant Orders</h2>
+
+<div class="d-flex gap-2 mb-3">
+
+    <input id="searchBox"
+           class="form-control"
+           placeholder="Search item..." />
+
+    <select id="statusFilter"
+            class="form-select"
+            style="width:180px">
+
+        <option value="All">All</option>
+        <option value="Pending">Pending</option>
+        <option value="Confirmed">Confirmed</option>
+
+    </select>
+
+</div>
+
+
+<div style="max-height:500px; overflow-y:auto">
+
+    <table class="table bg-white shadow-sm">
+
+        <thead class="table-dark sticky-top">
+
+            <tr>
+                <th>Item</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th style="width:260px">Actions</th>
+            </tr>
+
+        </thead>
+
+        <tbody id="orderTable">
+        </tbody>
+
+    </table>
+
+</div>
+
+
+@section Scripts {
+
+    <script>
+
+        let orders = [];
+
+        function fetchOrders(){
+
+        fetch('/AdminRestaurant/GetOrders')
+
+        .then(res=>res.json())
+
+        .then(data=>{
+
+        orders=data;
+
+        renderTable();
+
+        });
+
+        }
+
+
+        function renderTable(){
+
+        let search=document.getElementById("searchBox").value.toLowerCase();
+        let filter=document.getElementById("statusFilter").value;
+
+        let html="";
+
+        orders.forEach(o=>{
+
+        let matchSearch=o.itemName.toLowerCase().includes(search);
+        let matchStatus=(filter==="All"||o.status===filter);
+
+        if(matchSearch && matchStatus){
+
+        html+=`
+
+        <tr>
+
+        <td>${o.itemName}</td>
+
+        <td>${new Date(o.orderDate).toLocaleDateString()}</td>
+
+        <td>
+
+        <span class="badge rounded-pill px-3
+        ${o.status==="Confirmed"?"bg-success":"bg-warning text-dark"}">
+
+        ${o.status}
+
+        </span>
+
+        </td>
+
+        <td>
+
+        <button class="btn btn-sm btn-success me-2 action-btn"
+        onclick="changeStatus(${o.id},'Confirmed')">
+
+        Confirm
+
+        </button>
+
+        <button class="btn btn-sm btn-secondary me-2 action-btn"
+        onclick="changeStatus(${o.id},'Pending')">
+
+        Pending
+
+        </button>
+
+        <button class="btn btn-sm btn-danger action-btn"
+        onclick="deleteOrder(${o.id})">
+
+        Delete
+
+        </button>
+
+        </td>
+
+        </tr>
+
+        `;
+
+        }
+
+        });
+
+        document.getElementById("orderTable").innerHTML=html;
+
+        }
+
+
+
+        function changeStatus(id,status){
+
+        fetch('/AdminRestaurant/ChangeStatus',{
+
+        method:'POST',
+
+        headers:{'Content-Type':'application/json'},
+
+        body:JSON.stringify({id:id,status:status})
+
+        })
+        .then(()=>fetchOrders());
+
+        }
+
+
+        function deleteOrder(id){
+
+        if(!confirm("Delete order?")) return;
+
+        fetch('/AdminRestaurant/Delete',{
+
+        method:'POST',
+
+        headers:{'Content-Type':'application/json'},
+
+        body:JSON.stringify({id:id})
+
+        })
+        .then(()=>fetchOrders());
+
+        }
+
+
+        document.getElementById("searchBox").addEventListener("keyup",renderTable);
+        document.getElementById("statusFilter").addEventListener("change",renderTable);
+
+        fetchOrders();
+
+    </script>
+
+
+    <style>
+
+        .action-btn {
+            transition: 0.2s;
+        }
+
+            .action-btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 10px rgba(0,0,0,.2);
+            }
+
+    </style>
+
+}

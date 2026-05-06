@@ -1,0 +1,119 @@
+﻿@* 
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+
+@{
+    <nav class="navbar navbar-expand-lg navbar-dark bg-black shadow-sm"
+         style="padding:14px 40px;">
+
+        <!-- Brand -->
+        <span class="navbar-brand text-danger fw-bold fs-4">
+            Admin Panel
+        </span>
+
+        <!-- Navbar Links -->
+        <div class="navbar-nav mx-auto">
+
+            <a class="nav-link px-3 fw-semibold text-light"
+               asp-controller="Admin"
+               asp-action="Dashboard">
+                Dashboard
+            </a>
+
+
+
+            <a href="/Admin/Users" class="nav-link px-3 fw-semibold text-light">
+                Users
+            </a>
+
+            <a class="nav-link px-3 fw-semibold text-light"
+               asp-controller="Bookings"
+               asp-action="Index">
+                Bookings
+            </a>
+
+            <a class="nav-link px-3 fw-semibold text-light"
+               asp-controller="Spa"
+               asp-action="Index">
+                Spa
+            </a>
+
+            <a class="nav-link px-3 fw-semibold text-light"
+               asp-controller="AdminRestaurant"
+               asp-action="Index">
+                Restaurant
+            </a>
+
+        </div>
+
+        <!-- Logout Button -->
+        <form asp-controller="Admin"
+              asp-action="Logout"
+              method="post">
+
+            <button class="btn btn-outline-danger btn-sm px-3">
+                Logout
+            </button>
+
+        </form>
+
+    </nav>
+} *@
+
+
+@* Admin Navbar *@
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-black shadow-sm"
+     style="padding:14px 40px;">
+
+    <!-- Brand -->
+    <span class="navbar-brand text-danger fw-bold fs-4">
+        Admin Panel
+    </span>
+
+    <!-- Navbar Links -->
+    <div class="navbar-nav mx-auto">
+
+        <a class="nav-link px-3 fw-semibold text-light"
+           asp-controller="Admin"
+           asp-action="Dashboard">
+            Dashboard
+        </a>
+
+        <a asp-controller="AdminUsers"
+           asp-action="Index"
+           class="nav-link px-3 fw-semibold text-light">
+            Users
+        </a>
+
+        <a class="nav-link px-3 fw-semibold text-light"
+           asp-controller="Bookings"
+           asp-action="Index">
+            Bookings
+        </a>
+
+        <a class="nav-link px-3 fw-semibold text-light"
+           asp-controller="Spa"
+           asp-action="Index">
+            Spa
+        </a>
+
+        <a class="nav-link px-3 fw-semibold text-light"
+           asp-controller="AdminRestaurant"
+           asp-action="Index">
+            Restaurant
+        </a>
+
+    </div>
+
+    <!-- Logout Button -->
+    <form asp-controller="Admin"
+          asp-action="Logout"
+          method="post">
+
+        <button class="btn btn-outline-danger btn-sm px-3">
+            Logout
+        </button>
+
+    </form>
+
+</nav>

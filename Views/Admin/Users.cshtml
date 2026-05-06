@@ -1,0 +1,52 @@
+﻿@model List<HotelBooking.Models.User>
+
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="container-fluid p-4">
+    <h3 class="fw-bold mb-4">👤 Users</h3>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th style="width:80px;">ID</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th style="width:150px;">Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @if (Model != null && Model.Count > 0)
+                {
+                    foreach (var user in Model)
+                    {
+                        <tr>
+                            <td>@user.Id</td>
+                            <td>@user.Username</td>
+                            <td>@user.Email</td>
+                            <td>
+                                <!-- DELETE BUTTON -->
+                                <a asp-action="Delete"
+                                   asp-route-id="@user.Id"
+                                   class="btn btn-danger btn-sm">
+                                    🗑 Delete
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="4" class="text-center">
+                            No users found
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

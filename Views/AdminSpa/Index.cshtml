@@ -1,0 +1,360 @@
+﻿@* @model List<HotelBooking.Models.SpaBooking>
+
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="container mt-4">
+
+    <h2 class="mb-4">Spa Bookings</h2>
+
+    <div class="d-flex gap-2 mb-3">
+
+        <input id="searchBox"
+               class="form-control"
+               placeholder="Search service..." />
+
+        <select id="statusFilter"
+                class="form-select"
+                style="width:180px">
+
+            <option value="All">All</option>
+            <option value="Pending">Pending</option>
+            <option value="Confirmed">Confirmed</option>
+
+        </select>
+
+    </div>
+
+    <div style="max-height:500px;overflow-y:auto">
+
+        <table class="table bg-white shadow-sm" id="spaTable">
+
+            <thead class="table-dark sticky-top">
+
+                <tr>
+                    <th>Service</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th style="width:260px">Actions</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                @foreach (var s in Model)
+                {
+
+                    <tr data-status="@s.Status">
+
+                        <td class="service">@s.ServiceName</td>
+
+                        <td>@s.BookingDate.ToShortDateString()</td>
+
+                        <td>
+
+                            <span class="badge rounded-pill px-3
+    @(s.Status == "Confirmed" ? "bg-success" : "bg-warning text-dark")">
+
+                                @s.Status
+
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <button class="btn btn-sm btn-success me-2 action-btn"
+                                    onclick="changeStatus(@s.Id,'Confirmed')">
+
+                                Confirm
+
+                            </button>
+
+                            <button class="btn btn-sm btn-secondary me-2 action-btn"
+                                    onclick="changeStatus(@s.Id,'Pending')">
+
+                                Pending
+
+                            </button>
+
+                            <button class="btn btn-sm btn-danger action-btn"
+                                    onclick="deleteSpa(@s.Id)">
+
+                                Delete
+
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+<script>
+
+    function changeStatus(id,status){
+
+    $.post("/AdminSpa/ChangeStatus",
+    { id:id, status:status },
+    function(){
+    location.reload();
+    });
+
+    }
+
+    function deleteSpa(id){
+
+    if(!confirm("Delete spa booking?")) return;
+
+    $.post("/AdminSpa/Delete",
+    { id:id },
+    function(){
+    location.reload();
+    });
+
+    }
+
+    $("#searchBox").on("keyup",function(){
+
+    var value=$(this).val().toLowerCase();
+
+    $("#spaTable tbody tr").filter(function(){
+
+    $(this).toggle($(this).find(".service").text().toLowerCase().indexOf(value)>-1)
+
+    });
+
+    });
+
+    $("#statusFilter").on("change",function(){
+
+    var value=$(this).val();
+
+    $("#spaTable tbody tr").each(function(){
+
+    var status=$(this).data("status");
+
+    if(value=="All" || status==value){
+    $(this).show();
+    }else{
+    $(this).hide();
+    }
+
+    });
+
+    });
+
+</script>
+
+<style>
+
+    .action-btn {
+        transition: 0.2s;
+    }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,.2);
+        }
+
+</style>
+ *@
+
+@model List<HotelBooking.Models.SpaBooking>
+
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="container mt-4">
+
+    <h2 class="mb-4">Spa Bookings</h2>
+
+    <!-- AntiForgery Token (IMPORTANT) -->
+    <form id="antiForgeryForm">
+        @Html.AntiForgeryToken()
+    </form>
+
+    <div class="d-flex gap-2 mb-3">
+
+        <input id="searchBox"
+               class="form-control"
+               placeholder="Search service..." />
+
+        <select id="statusFilter"
+                class="form-select"
+                style="width:180px">
+
+            <option value="All">All</option>
+            <option value="Pending">Pending</option>
+            <option value="Confirmed">Confirmed</option>
+
+        </select>
+
+    </div>
+
+    <div style="max-height:500px;overflow-y:auto">
+
+        <table class="table bg-white shadow-sm" id="spaTable">
+
+            <thead class="table-dark sticky-top">
+
+                <tr>
+                    <th>Service</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th style="width:260px">Actions</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                @foreach (var s in Model)
+                {
+                    <tr data-status="@s.Status">
+
+                        <td class="service">@s.ServiceName</td>
+
+                        <td>@s.BookingDate.ToShortDateString()</td>
+
+                        <td>
+                            <span class="badge rounded-pill px-3
+                                    @(s.Status == "Confirmed" ? "bg-success" : "bg-warning text-dark")">
+                                @s.Status
+                            </span>
+                        </td>
+
+                        <td>
+                            <button class="btn btn-sm btn-success me-2 action-btn"
+                                    onclick="changeStatus(@s.Id,'Confirmed')">
+                                Confirm
+                            </button>
+
+                            <button class="btn btn-sm btn-secondary me-2 action-btn"
+                                    onclick="changeStatus(@s.Id,'Pending')">
+                                Pending
+                            </button>
+
+                            <button class="btn btn-sm btn-danger action-btn"
+                                    onclick="deleteSpa(@s.Id)">
+                                Delete
+                            </button>
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+
+    function getToken() {
+        return $('input[name="__RequestVerificationToken"]').val();
+    }
+
+    function changeStatus(id, status) {
+
+        $.ajax({
+            url: "/AdminSpa/ChangeStatus",
+            type: "POST",
+            data: {
+                id: id,
+                status: status,
+                __RequestVerificationToken: getToken()
+            },
+            success: function () {
+                location.reload(); // refresh after update
+            },
+            error: function (err) {
+                console.log(err);
+                alert("Status update failed");
+            }
+        });
+    }
+
+    function deleteSpa(id) {
+
+        if (!confirm("Delete spa booking?")) return;
+
+        $.ajax({
+            url: "/AdminSpa/Delete",
+            type: "POST",
+            data: {
+                id: id,
+                __RequestVerificationToken: getToken()
+            },
+            success: function () {
+                location.reload();
+            },
+            error: function (err) {
+                console.log(err);
+                alert("Delete failed");
+            }
+        });
+    }
+
+    // SEARCH
+    $("#searchBox").on("keyup", function () {
+
+        var value = $(this).val().toLowerCase();
+
+        $("#spaTable tbody tr").filter(function () {
+
+            $(this).toggle($(this).find(".service").text().toLowerCase().indexOf(value) > -1)
+
+        });
+
+    });
+
+    // FILTER
+    $("#statusFilter").on("change", function () {
+
+        var value = $(this).val();
+
+        $("#spaTable tbody tr").each(function () {
+
+            var status = $(this).data("status");
+
+            if (value == "All" || status == value) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+
+        });
+
+    });
+
+</script>
+
+<style>
+
+    .action-btn {
+        transition: 0.2s;
+    }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,.2);
+        }
+
+</style>

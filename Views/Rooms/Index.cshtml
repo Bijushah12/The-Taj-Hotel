@@ -1,0 +1,353 @@
+﻿@model List<HotelBooking.Models.Room>
+
+<style>
+
+    .room-card {
+        transition: all 0.3s ease;
+        border: none;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+        .room-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+
+        .room-card img {
+            transition: transform .4s ease;
+        }
+
+        .room-card:hover img {
+            transform: scale(1.08);
+        }
+
+    .price-badge {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        background: #000;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .discount-badge {
+        position: absolute;
+        bottom: 10px;
+        left: 10px;
+        background: #ff4d4d;
+        color: white;
+        padding: 4px 8px;
+        font-size: 12px;
+        border-radius: 5px;
+        font-weight: 600;
+    }
+
+    .wishlist {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: white;
+        border-radius: 50%;
+        width: 35px;
+        height: 35px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        cursor: pointer;
+        box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+        transition: all .3s;
+    }
+
+        .wishlist:hover {
+            background: #ff4d4d;
+            color: white;
+        }
+
+    .star {
+        color: gold;
+        font-size: 18px;
+        margin-right: 2px;
+        transition: transform .2s;
+    }
+
+        .star:hover {
+            transform: scale(1.4);
+        }
+
+    .filter-glass {
+        backdrop-filter: blur(12px);
+        background: rgba(255,255,255,0.65);
+        border-radius: 15px;
+        border: 1px solid rgba(255,255,255,0.3);
+    }
+
+    .search-box {
+        background: white;
+        border-radius: 50px;
+        padding: 10px 20px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+
+    .sort-box {
+        background: white;
+        padding: 8px 15px;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+        margin-top:10px;
+    }
+
+</style>
+
+
+<div class="container-fluid mt-4">
+
+    <!-- SEARCH BAR -->
+
+    <div class="row mb-4">
+
+        <div class="col-md-6 mx-auto">
+
+            <div class="search-box d-flex align-items-center">
+
+                <input type="text"
+                       id="searchRoom"
+                       class="form-control border-0"
+                       placeholder="Search rooms, suites...">
+
+                <button class="btn btn-dark ms-2" onclick="filterRooms()">
+                    Search
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <select id="sortPrice" class="sort-box">
+                <option value="">Sort Price</option>
+                <option value="low">Low → High</option>
+                <option value="high">High → Low</option>
+            </select>
+
+        </div>
+
+    </div>
+
+
+    <div class="row">
+
+        <!-- FILTER SIDEBAR -->
+
+        <div class="col-md-3">
+
+            <div class="card p-3 shadow-sm filter-glass mb-4">
+
+                <h5>Filters</h5>
+
+                <hr>
+
+                <label>Max Price</label>
+
+                <input type="range"
+                       min="1000"
+                       max="10000"
+                       value="10000"
+                       id="priceFilter"
+                       class="form-range">
+
+                <p>Up to ₹<span id="priceValue">10000</span></p>
+
+                <hr>
+
+                <h6>Stars</h6>
+
+                <label><input type="checkbox" class="starFilter" value="2"> 2 ⭐</label><br>
+                <label><input type="checkbox" class="starFilter" value="3"> 3 ⭐</label><br>
+                <label><input type="checkbox" class="starFilter" value="4"> 4 ⭐</label><br>
+                <label><input type="checkbox" class="starFilter" value="5"> 5 ⭐</label>
+
+            </div>
+
+        </div>
+
+
+        <!-- ROOMS GRID -->
+
+        <div class="col-md-9">
+
+            <div class="row" id="roomsContainer">
+
+                @foreach (var room in Model.Take(12))
+                {
+                    var stars = new Random().Next(2, 6);
+
+                    <div class="col-md-4 mb-4 roomCard"
+                         data-price="@room.PricePerNight"
+                         data-stars="@stars"
+                         data-name="@room.Name">
+
+                        <div class="card room-card h-100">
+
+                            <div style="position:relative">
+
+                                <img src="@room.ImageUrl"
+                                     class="card-img-top"
+                                     style="height:220px;object-fit:cover">
+
+                                <div class="price-badge">
+                                    ₹@room.PricePerNight / night
+                                </div>
+
+                                <div class="discount-badge">
+                                    20% OFF
+                                </div>
+
+                                <div class="wishlist"
+                                     onclick="addToWishlist('@room.Name','@room.ImageUrl','@room.PricePerNight')">
+                                    ♥
+                                </div>
+
+                            </div>
+
+                            <div class="card-body">
+
+                                <h5>@room.Name</h5>
+
+                                <div class="mb-2">
+
+                                    @for (int i = 0; i < stars; i++)
+                                    {
+                                        <span class="star">★</span>
+                                    }
+
+                                </div>
+
+                                <p>@room.Description</p>
+
+                                <a asp-action="Details"
+                                   asp-route-id="@room.Id"
+                                   class="btn btn-dark w-100">
+                                    View Room
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                }
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    const priceSlider=document.getElementById("priceFilter");
+    const priceValue=document.getElementById("priceValue");
+    const searchInput=document.getElementById("searchRoom");
+    const sortPrice=document.getElementById("sortPrice");
+
+    priceSlider.oninput=function(){
+    priceValue.innerText=this.value;
+    filterRooms();
+    }
+
+    document.querySelectorAll(".starFilter").forEach(cb=>{
+    cb.addEventListener("change",filterRooms);
+    })
+
+    searchInput.addEventListener("keyup",filterRooms);
+
+    sortPrice.addEventListener("change",sortRooms);
+
+    function filterRooms(){
+
+    let maxPrice=parseInt(priceSlider.value);
+    let search=searchInput.value.toLowerCase();
+
+    let starsSelected=[];
+
+    document.querySelectorAll(".starFilter").forEach(cb=>{
+    if(cb.checked){
+    starsSelected.push(parseInt(cb.value));
+    }
+    })
+
+    document.querySelectorAll(".roomCard").forEach(room=>{
+
+    let price=parseInt(room.dataset.price);
+    let stars=parseInt(room.dataset.stars);
+    let name=room.dataset.name.toLowerCase();
+
+    let priceMatch=price<=maxPrice;
+    let starMatch=starsSelected.length==0 || starsSelected.includes(stars);
+    let searchMatch=name.includes(search);
+
+    if(priceMatch && starMatch && searchMatch){
+    room.style.display="block";
+    }
+    else{
+    room.style.display="none";
+    }
+
+    })
+
+    }
+
+    /* PRICE SORT */
+
+    function sortRooms(){
+
+    let container=document.getElementById("roomsContainer");
+    let rooms=[...container.children];
+
+    rooms.sort((a,b)=>{
+
+    let priceA=parseInt(a.dataset.price);
+    let priceB=parseInt(b.dataset.price);
+
+    if(sortPrice.value=="low"){
+    return priceA-priceB;
+    }
+    else if(sortPrice.value=="high"){
+    return priceB-priceA;
+    }
+
+    });
+
+    rooms.forEach(room=>container.appendChild(room));
+
+    }
+
+    /* WISHLIST */
+
+    function addToWishlist(name,image,price){
+
+    let wishlist=JSON.parse(localStorage.getItem("wishlist")) || [];
+
+    wishlist.push({
+    name:name,
+    image:image,
+    price:price
+    });
+
+    localStorage.setItem("wishlist",JSON.stringify(wishlist));
+
+    alert(name+" added to wishlist ❤️");
+
+    }
+
+</script>
